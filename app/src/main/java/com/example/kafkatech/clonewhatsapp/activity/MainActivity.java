@@ -1,11 +1,12 @@
-package com.example.kafkatech.clonewhatsapp;
+package com.example.kafkatech.clonewhatsapp.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.kafkatech.clonewhatsapp.R;
 
 public class MainActivity extends AppCompatActivity {
 
