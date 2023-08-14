@@ -37,7 +37,10 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/digite_email" />
+            android:background="@color/colorPrimaryDark"
+            android:hint="@string/digite_email"
+            android:inputType="text|textEmailAddress"
+            android:textColor="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -54,7 +57,11 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/digite_senha" />
+            android:background="@color/colorPrimaryDark"
+            android:hint="@string/digite_senha"
+            android:inputType="text|textPassword"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -63,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="144dp"
         android:layout_marginEnd="144dp"
+        android:onClick="iniciaCadastro"
         android:text="@string/nao_tem_conta"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -76,9 +84,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/colorPrimaryDark"
         android:text="@string/button_logar"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/startCadastro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
