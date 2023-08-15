@@ -8,5 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Toolbar" parent="Theme.AppCompat.NoActionBar">
+
+    </style>
+
     <style name="Theme.CloneWhatsApp" parent="Base.Theme.CloneWhatsApp" />
 </resources>

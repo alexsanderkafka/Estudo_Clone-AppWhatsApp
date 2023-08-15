@@ -7,4 +7,7 @@
     <string name="digite_uma_senha">Digite uma senha</string>
     <string name="digite_nome">Digite o seu nome</string>
     <string name="button_cadastro">CADASTRAR</string>
+    <string name="pesquisar">Pesquisar</string>
+    <string name="configura_es">Configurações</string>
+    <string name="sair">Sair</string>
 </resources>
