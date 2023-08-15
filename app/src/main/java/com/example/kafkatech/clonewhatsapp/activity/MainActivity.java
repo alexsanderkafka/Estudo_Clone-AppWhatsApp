@@ -3,6 +3,7 @@ package com.example.kafkatech.clonewhatsapp.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +13,12 @@ import android.view.MenuItem;
 
 import com.example.kafkatech.clonewhatsapp.R;
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
+import com.example.kafkatech.clonewhatsapp.fragment.ContatosFragment;
+import com.example.kafkatech.clonewhatsapp.fragment.ConversasFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +33,20 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
         toolbar.setTitle("WhatsApp Fake");
         setSupportActionBar(toolbar);
+
+        //Configura abas
+        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+              getSupportFragmentManager(),
+                FragmentPagerItems.with(this)
+                        .add("Conversas", ConversasFragment.class)
+                        .add("Contatos", ContatosFragment.class)
+                        .create()
+        );
+
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        viewPager.setAdapter(adapter);
+        SmartTabLayout viewPagerTab = findViewById(R.id.viewPagerTab);
+        viewPagerTab.setViewPager(viewPager);
     }
 
     @Override
