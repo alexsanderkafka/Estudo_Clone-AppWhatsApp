@@ -7,17 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:583158622805:android:06a086b73b36a53f0a02dc",
+        "mobilesdk_app_id": "1:583158622805:android:a47d4633e3433d850a02dc",
         "android_client_info": {
-          "package_name": "com.example.kafkatech.myapplication"
+          "package_name": "com.example.kafkatech.clonewhatsapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "583158622805-1g60ist1hd3dfjqf2k6pp2k1ffhi2c3s.apps.googleusercontent.com",
+          "client_id": "583158622805-hng25equ96usc2kei4s8g407soj594v8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.kafkatech.myapplication",
+            "package_name": "com.example.kafkatech.clonewhatsapp",
             "certificate_hash": "799990c7063ba73e983cc43de6a0c39269dc0a06"
           }
         },
