@@ -49,4 +49,7 @@ dependencies {
     //Dependências para abas
     implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
     implementation 'com.ogaclejapan.smarttablayout:utils-v4:2.0.0@aar'
+
+    //Library para deixar a imagem arredondadada
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }

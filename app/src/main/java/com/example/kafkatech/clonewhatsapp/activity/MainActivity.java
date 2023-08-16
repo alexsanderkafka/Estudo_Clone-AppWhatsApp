@@ -62,7 +62,16 @@ public class MainActivity extends AppCompatActivity {
             deslogarUser();
             finish();
         }
+
+        if(item.getItemId() == R.id.menuConfiguracoes){
+            abrirConfiguracao();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void abrirConfiguracao(){
+        startActivity(new Intent(MainActivity.this, ConfiguracaoActivity.class));
+        finish();
     }
 
     public void deslogarUser(){
