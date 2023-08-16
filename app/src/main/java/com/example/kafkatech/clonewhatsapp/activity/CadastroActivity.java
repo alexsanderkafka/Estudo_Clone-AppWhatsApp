@@ -3,6 +3,7 @@ package com.example.kafkatech.clonewhatsapp.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.kafkatech.clonewhatsapp.R;
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
+import com.example.kafkatech.clonewhatsapp.helper.CodeBase64;
 import com.example.kafkatech.clonewhatsapp.model.PessoaCadastro;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -69,6 +71,11 @@ public class CadastroActivity extends AppCompatActivity {
 
     }
 
+    public void vaiParaTelaMain(){
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
     public void cadastrarUsuario(PessoaCadastro user){
         auth = ConfiguraFirebase.getFirebaseAuth();
         auth.createUserWithEmailAndPassword(
@@ -79,8 +86,16 @@ public class CadastroActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 String excecao = "";
                 if(task.isSuccessful()){
+                    try {
+                        String emailCode = CodeBase64.codeBase64(user.getEmail());
+                        user.setId(emailCode);
+                        user.salvar();
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                    }
                     Toast.makeText(CadastroActivity.this, "Sucesso ao cadastrar user", Toast.LENGTH_SHORT).show();
-                    finish();
+                    vaiParaTelaMain();
                 }
                 else{
                     try {
