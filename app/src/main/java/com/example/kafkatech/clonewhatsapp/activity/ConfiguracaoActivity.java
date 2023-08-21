@@ -17,10 +17,20 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.kafkatech.clonewhatsapp.R;
+import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
+import com.example.kafkatech.clonewhatsapp.helper.CodeBase64;
 import com.example.kafkatech.clonewhatsapp.helper.Permissao;
+import com.example.kafkatech.clonewhatsapp.helper.UsuarioFirebase;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -30,17 +40,22 @@ public class ConfiguracaoActivity extends AppCompatActivity {
     private ImageButton imageButtonCam, imageButtonGallery;
     private static final int SELECAO_CAMERA = 100;
     private static final int SELECAO_GALLERY = 200;
-    private CircleImageView imagePerfil;
-
     private final String[] permissoesNecessarias = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     };
+    private CircleImageView imagePerfil;
+    private StorageReference storageReference;
+
+    private String identificadorUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuracao);
+
+        storageReference = ConfiguraFirebase.getFirebaseStorage();
+        identificadorUsuario = UsuarioFirebase.getidUsuario();
 
         Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
         toolbar.setTitle("Configuração");
@@ -93,6 +108,28 @@ public class ConfiguracaoActivity extends AppCompatActivity {
                 }
                 if(imagem != null){
                     imagePerfil.setImageBitmap(imagem);
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    imagem.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+                    byte[] dadosImagem = baos.toByteArray();
+                    StorageReference imagensRef = storageReference
+                            .child("imagens")
+                            .child("perfil")
+                            //.child(identificadorUsuario)
+                            .child(identificadorUsuario + ".jpeg");
+
+                    UploadTask uploadTask = imagensRef.putBytes(dadosImagem);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ConfiguracaoActivity.this, "Erro ao fazer upload da imagem", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(ConfiguracaoActivity.this, "Sucesso ao fazer upload da imagem", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
             catch (Exception e){
