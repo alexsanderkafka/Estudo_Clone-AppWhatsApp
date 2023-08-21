@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
+        android:id="@+id/imagePerfil"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_marginBottom="16dp"
@@ -46,7 +46,7 @@
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image">
+        app:layout_constraintTop_toBottomOf="@+id/imagePerfil">
 
         <EditText
             android:id="@+id/editTextText"
@@ -84,12 +84,12 @@
         android:id="@+id/imageButtonCam"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+        app:layout_constraintBottom_toBottomOf="@+id/imagePerfil"
         app:layout_constraintEnd_toStartOf="@+id/imageButtonGallery"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/profile_image"
+        app:layout_constraintTop_toTopOf="@+id/imagePerfil"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/ic_camera_cinza_24dp"
         tools:ignore="TouchTargetSizeCheck" />
@@ -98,11 +98,11 @@
         android:id="@+id/imageButtonGallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+        app:layout_constraintBottom_toBottomOf="@+id/imagePerfil"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/imageButtonCam"
-        app:layout_constraintTop_toTopOf="@+id/profile_image"
+        app:layout_constraintTop_toTopOf="@+id/imagePerfil"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/ic_photo_cinza_24dp" />
 
