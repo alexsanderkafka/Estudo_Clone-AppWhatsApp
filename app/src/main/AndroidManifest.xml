@@ -4,11 +4,15 @@
 
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="false" />
+        android:required="true" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.CAMERA" android:maxSdkVersion="32"/>
+
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true"/>
 
     <application
         android:allowBackup="true"
