@@ -18,6 +18,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -26,12 +27,14 @@ import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
 import com.example.kafkatech.clonewhatsapp.helper.CodeBase64;
 import com.example.kafkatech.clonewhatsapp.helper.Permissao;
 import com.example.kafkatech.clonewhatsapp.helper.UsuarioFirebase;
+import com.example.kafkatech.clonewhatsapp.model.PessoaCadastro;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -53,7 +56,10 @@ public class ConfiguracaoActivity extends AppCompatActivity {
     private StorageReference storageReference;
 
     private String identificadorUsuario;
+    private DatabaseReference databaseReference;
     private EditText nomeUser;
+    private ImageView buttonSalvarNome;
+    private PessoaCadastro userLogado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +67,7 @@ public class ConfiguracaoActivity extends AppCompatActivity {
 
         storageReference = ConfiguraFirebase.getFirebaseStorage();
         identificadorUsuario = UsuarioFirebase.getidUsuario();
+        userLogado = UsuarioFirebase.getDadosUsuarioLogado();
 
         Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
         toolbar.setTitle("Configuração");
@@ -74,6 +81,7 @@ public class ConfiguracaoActivity extends AppCompatActivity {
         imageButtonGallery = findViewById(R.id.imageButtonGallery);
         imagePerfil = findViewById(R.id.imagePerfil);
         nomeUser = findViewById(R.id.editTextPerfilUser);
+        buttonSalvarNome = findViewById(R.id.buttonSalvarNome);
 
         imageButtonCam.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("QueryPermissionsNeeded")
@@ -109,6 +117,19 @@ public class ConfiguracaoActivity extends AppCompatActivity {
         }
 
         nomeUser.setText(usuario.getDisplayName());
+
+        buttonSalvarNome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nome = nomeUser.getText().toString();
+                boolean retorno = UsuarioFirebase.atualizarNomeUser(nome);
+                if(retorno){
+                    userLogado.setNome(nome);
+                    userLogado.atualizar();
+                    Toast.makeText(ConfiguracaoActivity.this, "Nome alterado com sucesso", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -166,7 +187,12 @@ public class ConfiguracaoActivity extends AppCompatActivity {
     }
 
     private void atualizaFotoUser(Uri url) {
-        UsuarioFirebase.atualizarFotoUser(url);
+        boolean retorno = UsuarioFirebase.atualizarFotoUser(url);
+        if(retorno){
+            userLogado.setFoto(url.toString());
+            userLogado.atualizar();
+            Toast.makeText(this, "Sua foi alterada!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
