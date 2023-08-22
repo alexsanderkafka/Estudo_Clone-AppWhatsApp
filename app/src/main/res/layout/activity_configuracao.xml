@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imagePerfil">
 
         <EditText
-            android:id="@+id/editTextText"
+            android:id="@+id/editTextPerfilUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

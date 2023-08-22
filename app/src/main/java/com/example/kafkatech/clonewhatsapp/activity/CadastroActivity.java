@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.kafkatech.clonewhatsapp.R;
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
 import com.example.kafkatech.clonewhatsapp.helper.CodeBase64;
+import com.example.kafkatech.clonewhatsapp.helper.UsuarioFirebase;
 import com.example.kafkatech.clonewhatsapp.model.PessoaCadastro;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -86,6 +87,9 @@ public class CadastroActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 String excecao = "";
                 if(task.isSuccessful()){
+                    Toast.makeText(CadastroActivity.this, "Sucesso ao cadastrar usuário!", Toast.LENGTH_SHORT).show();
+                    UsuarioFirebase.atualizarNomeUser(user.getNome());
+
                     try {
                         String emailCode = CodeBase64.codeBase64(user.getEmail());
                         user.setId(emailCode);
