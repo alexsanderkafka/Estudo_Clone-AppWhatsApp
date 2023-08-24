@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void abrirConfiguracao(){
         startActivity(new Intent(MainActivity.this, ConfiguracaoActivity.class));
-        finish();
     }
 
     public void deslogarUser(){

@@ -1,14 +1,27 @@
 package com.example.kafkatech.clonewhatsapp.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kafkatech.clonewhatsapp.R;
+import com.example.kafkatech.clonewhatsapp.adapter.ContatosAdapter;
+import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
+import com.example.kafkatech.clonewhatsapp.model.PessoaCadastro;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +34,10 @@ public class ContatosFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private ContatosAdapter contatosAdapter;
+    private ArrayList<PessoaCadastro> listaContatos = new ArrayList<>();
+    private DatabaseReference usuariosRef;
+    private ValueEventListener valueEventListenerContatos;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -61,6 +78,48 @@ public class ContatosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contatos, container, false);
+        View view = inflater.inflate(R.layout.fragment_contatos, container, false);
+
+        //Configurações iniciais
+        RecyclerView recyclerViewListaContatos = view.findViewById(R.id.recyclerViewListaContatos);
+        usuariosRef = ConfiguraFirebase.getFirebaseDataBase().child("usuarios");
+
+        contatosAdapter = new ContatosAdapter(listaContatos, getActivity());
+
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
+        recyclerViewListaContatos.setLayoutManager(manager);
+        recyclerViewListaContatos.setHasFixedSize(true);
+        recyclerViewListaContatos.setAdapter(contatosAdapter);
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        recuperarContatos();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        usuariosRef.removeEventListener(valueEventListenerContatos);
+    }
+
+    public void recuperarContatos(){
+        valueEventListenerContatos = usuariosRef.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dados : snapshot.getChildren()){
+                    PessoaCadastro user = dados.getValue(PessoaCadastro.class);
+                    listaContatos.add(user);
+                }
+                contatosAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 }
