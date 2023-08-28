@@ -31,8 +31,9 @@
             android:name=".activity.ChatActivity"
             android:exported="false"
             android:label="@string/title_activity_chat"
+            android:parentActivityName=".activity.MainActivity"
             android:theme="@style/Theme.CloneWhatsApp"
-            android:parentActivityName=".activity.MainActivity"/>
+            />
         <activity
             android:name=".activity.ConfiguracaoActivity"
             android:exported="false"
