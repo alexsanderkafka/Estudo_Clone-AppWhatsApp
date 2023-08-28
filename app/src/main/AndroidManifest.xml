@@ -6,13 +6,16 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.CAMERA" android:maxSdkVersion="32"/>
+    <uses-permission
+        android:name="android.permission.CAMERA"
+        android:maxSdkVersion="32" />
 
     <uses-feature
         android:name="android.hardware.camera2"
-        android:required="true"/>
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -25,9 +28,15 @@
         android:theme="@style/Theme.CloneWhatsApp"
         tools:targetApi="31">
         <activity
+            android:name=".activity.ChatActivity"
+            android:exported="false"
+            android:label="@string/title_activity_chat"
+            android:theme="@style/Theme.CloneWhatsApp"
+            android:parentActivityName=".activity.MainActivity"/>
+        <activity
             android:name=".activity.ConfiguracaoActivity"
             android:exported="false"
-            android:parentActivityName=".activity.MainActivity"/>
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.CadastroActivity"
             android:exported="false" />

@@ -1,6 +1,7 @@
 package com.example.kafkatech.clonewhatsapp.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,17 +12,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.example.kafkatech.clonewhatsapp.R;
+import com.example.kafkatech.clonewhatsapp.activity.ChatActivity;
 import com.example.kafkatech.clonewhatsapp.adapter.ContatosAdapter;
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
+import com.example.kafkatech.clonewhatsapp.helper.RecyclerItemClickListener;
+import com.example.kafkatech.clonewhatsapp.helper.UsuarioFirebase;
 import com.example.kafkatech.clonewhatsapp.model.PessoaCadastro;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +45,7 @@ public class ContatosFragment extends Fragment {
     private ArrayList<PessoaCadastro> listaContatos = new ArrayList<>();
     private DatabaseReference usuariosRef;
     private ValueEventListener valueEventListenerContatos;
+    private FirebaseUser usuarioAtual;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -83,13 +91,38 @@ public class ContatosFragment extends Fragment {
         //Configurações iniciais
         RecyclerView recyclerViewListaContatos = view.findViewById(R.id.recyclerViewListaContatos);
         usuariosRef = ConfiguraFirebase.getFirebaseDataBase().child("usuarios");
-
+        usuarioAtual = UsuarioFirebase.getUsuarioAtual();
         contatosAdapter = new ContatosAdapter(listaContatos, getActivity());
 
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
         recyclerViewListaContatos.setLayoutManager(manager);
         recyclerViewListaContatos.setHasFixedSize(true);
         recyclerViewListaContatos.setAdapter(contatosAdapter);
+
+        //Configura evento de clique no recyclerview
+        recyclerViewListaContatos.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getActivity(),
+                        recyclerViewListaContatos,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Intent i = new Intent(getActivity(), ChatActivity.class);
+                                startActivity(i);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            }
+                        }
+                )
+        );
         return view;
     }
 
@@ -112,7 +145,11 @@ public class ContatosFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dados : snapshot.getChildren()){
                     PessoaCadastro user = dados.getValue(PessoaCadastro.class);
-                    listaContatos.add(user);
+                    String emailUsuarioAtual = user.getEmail();
+
+                    if(!Objects.equals(usuarioAtual.getEmail(), emailUsuarioAtual)){
+                        listaContatos.add(user);
+                    }
                 }
                 contatosAdapter.notifyDataSetChanged();
             }
