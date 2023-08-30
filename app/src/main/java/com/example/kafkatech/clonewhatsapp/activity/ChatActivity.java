@@ -114,6 +114,9 @@ public class ChatActivity extends AppCompatActivity {
 
             //Salvar a mensagem para o remetente
             salvarMensagem(idUserRemetente, idUserDestinatario, mensagem);
+
+            //Salvar a mensagem para o destinatario
+            salvarMensagem(idUserDestinatario, idUserRemetente, mensagem);
         }
         else{
             Toast.makeText(this, "Digite uma mensagem para enviar!", Toast.LENGTH_SHORT).show();
