@@ -68,6 +68,7 @@ public class ConfiguracaoActivity extends AppCompatActivity {
         storageReference = ConfiguraFirebase.getFirebaseStorage();
         identificadorUsuario = UsuarioFirebase.getidUsuario();
         userLogado = UsuarioFirebase.getDadosUsuarioLogado();
+        storageReference = ConfiguraFirebase.getFirebaseStorage();
 
         Toolbar toolbar = findViewById(R.id.toolbarPrincipal);
         toolbar.setTitle("Configuração");
@@ -151,9 +152,11 @@ public class ConfiguracaoActivity extends AppCompatActivity {
                 if(imagem != null){
                     imagePerfil.setImageBitmap(imagem);
 
+                    //Recupera dados da imagem para o firebase
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     imagem.compress(Bitmap.CompressFormat.JPEG, 70, baos);
                     byte[] dadosImagem = baos.toByteArray();
+
                     StorageReference imagensRef = storageReference
                             .child("imagens")
                             .child("perfil")
