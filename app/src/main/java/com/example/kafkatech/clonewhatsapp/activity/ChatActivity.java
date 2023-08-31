@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -24,9 +23,9 @@ import com.bumptech.glide.Glide;
 import com.example.kafkatech.clonewhatsapp.R;
 import com.example.kafkatech.clonewhatsapp.adapter.MensagensAdapter;
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
-import com.example.kafkatech.clonewhatsapp.databinding.ActivityMainBinding;
 import com.example.kafkatech.clonewhatsapp.helper.CodeBase64;
 import com.example.kafkatech.clonewhatsapp.helper.UsuarioFirebase;
+import com.example.kafkatech.clonewhatsapp.model.Conversa;
 import com.example.kafkatech.clonewhatsapp.model.Mensagem;
 import com.example.kafkatech.clonewhatsapp.model.PessoaCadastro;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,12 +33,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -211,11 +208,26 @@ public class ChatActivity extends AppCompatActivity {
 
             //Salvar a mensagem para o destinatario
             salvarMensagem(idUserDestinatario, idUserRemetente, mensagem);
+
+            //Salva uma conversa em um novo nó no firebase
+            salvarConversa(mensagem);
+
         }
         else{
             Toast.makeText(this, "Digite uma mensagem para enviar!", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void salvarConversa(Mensagem mensagem) {
+        Conversa conversaRemetente = new Conversa();
+        conversaRemetente.setIdRemetente(idUserRemetente);
+        conversaRemetente.setIdDestinatario(idUserDestinatario);
+        conversaRemetente.setUltimaMensagem(mensagem.getMensagem());
+        conversaRemetente.setUserExibicao(userDestinatario);
+
+        conversaRemetente.salvar();
+    }
+
 
     public void salvarMensagem(String idRementente, String idDestinatario, Mensagem mensagem){
         DatabaseReference reference = ConfiguraFirebase.getFirebaseDataBase();
