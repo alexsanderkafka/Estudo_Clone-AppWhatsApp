@@ -8,7 +8,7 @@ public class Conversa {
     private String idRemetente;
     private String idDestinatario;
     private String ultimaMensagem;
-    private PessoaCadastro userExibicao;
+    private Usuario userExibicao;
 
     public Conversa() {
     }
@@ -37,11 +37,11 @@ public class Conversa {
         this.ultimaMensagem = ultimaMensagem;
     }
 
-    public PessoaCadastro getUserExibicao() {
+    public Usuario getUserExibicao() {
         return userExibicao;
     }
 
-    public void setUserExibicao(PessoaCadastro userExibicao) {
+    public void setUserExibicao(Usuario userExibicao) {
         this.userExibicao = userExibicao;
     }
 

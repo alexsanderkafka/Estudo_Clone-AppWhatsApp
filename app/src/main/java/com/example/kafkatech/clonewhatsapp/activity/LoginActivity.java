@@ -11,9 +11,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.kafkatech.clonewhatsapp.R;
-import com.example.kafkatech.clonewhatsapp.activity.CadastroActivity;
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
-import com.example.kafkatech.clonewhatsapp.model.PessoaCadastro;
+import com.example.kafkatech.clonewhatsapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -46,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
                 String senha = editSenha.getText().toString();
                 if(!email.isEmpty()){
                     if(!senha.isEmpty()){
-                        PessoaCadastro pessoa = new PessoaCadastro();
+                        Usuario pessoa = new Usuario();
                         pessoa.setEmail(email);
                         pessoa.setSenha(senha);
                         logarUser(pessoa);
@@ -62,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void logarUser(PessoaCadastro pessoa) {
+    private void logarUser(Usuario pessoa) {
         auth.signInWithEmailAndPassword(
                 pessoa.getEmail(),
                 pessoa.getSenha()

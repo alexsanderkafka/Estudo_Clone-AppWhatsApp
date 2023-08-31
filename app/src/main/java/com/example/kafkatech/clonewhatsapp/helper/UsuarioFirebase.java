@@ -6,13 +6,12 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
-import com.example.kafkatech.clonewhatsapp.model.PessoaCadastro;
+import com.example.kafkatech.clonewhatsapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DatabaseReference;
 
 public class UsuarioFirebase {
     public static String getidUsuario(){
@@ -73,9 +72,9 @@ public class UsuarioFirebase {
         }
     }
 
-    public static PessoaCadastro getDadosUsuarioLogado(){
+    public static Usuario getDadosUsuarioLogado(){
         FirebaseUser firebaseUser = getUsuarioAtual();
-        PessoaCadastro user = new PessoaCadastro();
+        Usuario user = new Usuario();
         user.setEmail(firebaseUser.getEmail());
         user.setNome(firebaseUser.getDisplayName());
 

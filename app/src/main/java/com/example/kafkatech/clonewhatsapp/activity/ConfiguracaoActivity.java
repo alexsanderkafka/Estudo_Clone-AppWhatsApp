@@ -24,22 +24,19 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.kafkatech.clonewhatsapp.R;
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
-import com.example.kafkatech.clonewhatsapp.helper.CodeBase64;
 import com.example.kafkatech.clonewhatsapp.helper.Permissao;
 import com.example.kafkatech.clonewhatsapp.helper.UsuarioFirebase;
-import com.example.kafkatech.clonewhatsapp.model.PessoaCadastro;
+import com.example.kafkatech.clonewhatsapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -59,7 +56,7 @@ public class ConfiguracaoActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private EditText nomeUser;
     private ImageView buttonSalvarNome;
-    private PessoaCadastro userLogado;
+    private Usuario userLogado;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

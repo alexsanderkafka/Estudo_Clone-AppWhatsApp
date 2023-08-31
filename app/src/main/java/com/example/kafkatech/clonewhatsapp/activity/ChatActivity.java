@@ -27,7 +27,7 @@ import com.example.kafkatech.clonewhatsapp.helper.CodeBase64;
 import com.example.kafkatech.clonewhatsapp.helper.UsuarioFirebase;
 import com.example.kafkatech.clonewhatsapp.model.Conversa;
 import com.example.kafkatech.clonewhatsapp.model.Mensagem;
-import com.example.kafkatech.clonewhatsapp.model.PessoaCadastro;
+import com.example.kafkatech.clonewhatsapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -52,7 +52,7 @@ public class ChatActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private CircleImageView imageView;
     private TextView nomeDoAmigo;
-    private PessoaCadastro userDestinatario;
+    private Usuario userDestinatario;
     private EditText editMensagem;
     private String idUserRemetente;
     private String idUserDestinatario;
@@ -87,7 +87,7 @@ public class ChatActivity extends AppCompatActivity {
         //Recupera dados do usuário destinatario
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            userDestinatario = (PessoaCadastro) bundle.getSerializable("chatContato");
+            userDestinatario = (Usuario) bundle.getSerializable("chatContato");
             nomeDoAmigo.setText(userDestinatario.getNome());
 
             String foto = userDestinatario.getFoto();

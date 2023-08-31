@@ -40,7 +40,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textEmailContatos"
+                android:id="@+id/textMsgContatos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/e_mail" />

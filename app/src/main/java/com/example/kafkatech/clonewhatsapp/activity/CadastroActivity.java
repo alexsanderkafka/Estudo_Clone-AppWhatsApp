@@ -14,7 +14,7 @@ import com.example.kafkatech.clonewhatsapp.R;
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
 import com.example.kafkatech.clonewhatsapp.helper.CodeBase64;
 import com.example.kafkatech.clonewhatsapp.helper.UsuarioFirebase;
-import com.example.kafkatech.clonewhatsapp.model.PessoaCadastro;
+import com.example.kafkatech.clonewhatsapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -53,7 +53,7 @@ public class CadastroActivity extends AppCompatActivity {
                 if(!nome.isEmpty()){
                     if(!email.isEmpty()){
                         if(!senha.isEmpty()){
-                            PessoaCadastro user = new PessoaCadastro(nome, email, senha);
+                            Usuario user = new Usuario(nome, email, senha);
                             cadastrarUsuario(user);
                         }
                         else{
@@ -77,7 +77,7 @@ public class CadastroActivity extends AppCompatActivity {
         finish();
     }
 
-    public void cadastrarUsuario(PessoaCadastro user){
+    public void cadastrarUsuario(Usuario user){
         auth = ConfiguraFirebase.getFirebaseAuth();
         auth.createUserWithEmailAndPassword(
                 user.getEmail(),

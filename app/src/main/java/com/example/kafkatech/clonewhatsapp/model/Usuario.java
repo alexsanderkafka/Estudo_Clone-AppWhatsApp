@@ -1,17 +1,15 @@
 package com.example.kafkatech.clonewhatsapp.model;
 
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
-import com.example.kafkatech.clonewhatsapp.helper.CodeBase64;
 import com.example.kafkatech.clonewhatsapp.helper.UsuarioFirebase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PessoaCadastro implements Serializable {
+public class Usuario implements Serializable {
 
     private String nome;
     private String email;
@@ -19,10 +17,10 @@ public class PessoaCadastro implements Serializable {
     private String id;
     private String foto;
 
-    public PessoaCadastro() {
+    public Usuario() {
     }
 
-    public PessoaCadastro(String nome, String email, String senha) {
+    public Usuario(String nome, String email, String senha) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;

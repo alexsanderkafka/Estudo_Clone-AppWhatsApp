@@ -20,7 +20,7 @@ import com.example.kafkatech.clonewhatsapp.adapter.ContatosAdapter;
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
 import com.example.kafkatech.clonewhatsapp.helper.RecyclerItemClickListener;
 import com.example.kafkatech.clonewhatsapp.helper.UsuarioFirebase;
-import com.example.kafkatech.clonewhatsapp.model.PessoaCadastro;
+import com.example.kafkatech.clonewhatsapp.model.Usuario;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,7 +42,7 @@ public class ContatosFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private ContatosAdapter contatosAdapter;
-    private ArrayList<PessoaCadastro> listaContatos = new ArrayList<>();
+    private ArrayList<Usuario> listaContatos = new ArrayList<>();
     private DatabaseReference usuariosRef;
     private ValueEventListener valueEventListenerContatos;
     private FirebaseUser usuarioAtual;
@@ -107,7 +107,7 @@ public class ContatosFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                PessoaCadastro usuario = listaContatos.get(position);
+                                Usuario usuario = listaContatos.get(position);
                                 Intent i = new Intent(getActivity(), ChatActivity.class);
                                 i.putExtra("chatContato", usuario);
                                 startActivity(i);
@@ -146,7 +146,7 @@ public class ContatosFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dados : snapshot.getChildren()){
-                    PessoaCadastro user = dados.getValue(PessoaCadastro.class);
+                    Usuario user = dados.getValue(Usuario.class);
                     String emailUsuarioAtual = user.getEmail();
 
                     if(!Objects.equals(usuarioAtual.getEmail(), emailUsuarioAtual)){

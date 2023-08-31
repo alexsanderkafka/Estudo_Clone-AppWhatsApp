@@ -1,11 +1,29 @@
 package com.example.kafkatech.clonewhatsapp.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.kafkatech.clonewhatsapp.R;
+import com.example.kafkatech.clonewhatsapp.adapter.ConversasAdapter;
+import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
+import com.example.kafkatech.clonewhatsapp.helper.UsuarioFirebase;
+import com.example.kafkatech.clonewhatsapp.model.Conversa;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +41,15 @@ public class ConversasFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private RecyclerView recyclerViewConversas;
+    private List<Conversa> listConversas = new ArrayList<>();
+    private ConversasAdapter adapter;
+    private DatabaseReference databaseReference;
+    private DatabaseReference conversasRef;
+    private ChildEventListener childEventListenerConversas;
+
+
 
     /**
      * Use this factory method to create a new instance of
@@ -43,7 +70,6 @@ public class ConversasFragment extends Fragment {
     }
 
     public ConversasFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -59,6 +85,69 @@ public class ConversasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_conversas, container, false);
+        View view = inflater.inflate(R.layout.fragment_conversas, container, false);
+
+        recyclerViewConversas = view.findViewById(R.id.recyclerViewConversas);
+
+        //Configura o adapter
+        adapter = new ConversasAdapter(listConversas, getActivity());
+        //Configurar recyclerview
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerViewConversas.setLayoutManager(layoutManager);
+        recyclerViewConversas.setHasFixedSize(true);
+        recyclerViewConversas.setAdapter(adapter);
+
+        String idUser = UsuarioFirebase.getidUsuario();
+        databaseReference = ConfiguraFirebase.getFirebaseDataBase();
+        conversasRef = databaseReference.child("conversas")
+                .child(idUser);
+
+        return view;
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        recuperarConversas();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        conversasRef.removeEventListener(childEventListenerConversas);
+    }
+
+    public void recuperarConversas(){
+
+        childEventListenerConversas = conversasRef.addChildEventListener(new ChildEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Conversa conversa = snapshot.getValue(Conversa.class);
+                listConversas.add(conversa);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
