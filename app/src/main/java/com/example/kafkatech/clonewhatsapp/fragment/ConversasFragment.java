@@ -1,6 +1,7 @@
 package com.example.kafkatech.clonewhatsapp.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,11 +13,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+
 import com.example.kafkatech.clonewhatsapp.R;
+import com.example.kafkatech.clonewhatsapp.activity.ChatActivity;
 import com.example.kafkatech.clonewhatsapp.adapter.ConversasAdapter;
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
+import com.example.kafkatech.clonewhatsapp.helper.RecyclerItemClickListener;
 import com.example.kafkatech.clonewhatsapp.helper.UsuarioFirebase;
 import com.example.kafkatech.clonewhatsapp.model.Conversa;
+import com.example.kafkatech.clonewhatsapp.model.Usuario;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -101,6 +107,31 @@ public class ConversasFragment extends Fragment {
         databaseReference = ConfiguraFirebase.getFirebaseDataBase();
         conversasRef = databaseReference.child("conversas")
                 .child(idUser);
+
+        //Configura o evento de click no recycler view
+        recyclerViewConversas.addOnItemTouchListener(new RecyclerItemClickListener(
+                getActivity(),
+                recyclerViewConversas,
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Conversa conversa = listConversas.get(position);
+                        Intent i = new Intent(getActivity(), ChatActivity.class);
+                        i.putExtra("chatContato", conversa.getUserExibicao());
+                        startActivity(i);
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                }
+        ));
 
         return view;
 
