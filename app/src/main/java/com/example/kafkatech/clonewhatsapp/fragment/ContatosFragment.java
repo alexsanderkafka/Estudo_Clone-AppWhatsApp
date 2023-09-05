@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 
 import com.example.kafkatech.clonewhatsapp.R;
 import com.example.kafkatech.clonewhatsapp.activity.ChatActivity;
+import com.example.kafkatech.clonewhatsapp.activity.GrupoActivity;
 import com.example.kafkatech.clonewhatsapp.adapter.ContatosAdapter;
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
 import com.example.kafkatech.clonewhatsapp.helper.RecyclerItemClickListener;
@@ -107,9 +108,16 @@ public class ContatosFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Usuario usuario = listaContatos.get(position);
-                                Intent i = new Intent(getActivity(), ChatActivity.class);
-                                i.putExtra("chatContato", usuario);
+                                Usuario userSelect = listaContatos.get(position);
+                                boolean cabecalho = userSelect.getEmail().isEmpty();
+                                Intent i;
+                                if(cabecalho){
+                                    i = new Intent(getActivity(), GrupoActivity.class);
+                                }
+                                else{
+                                    i = new Intent(getActivity(), ChatActivity.class);
+                                    i.putExtra("chatContato", userSelect);
+                                }
                                 startActivity(i);
                             }
 
@@ -125,6 +133,12 @@ public class ContatosFragment extends Fragment {
                         }
                 )
         );
+
+        //Define usuário com e-mail vazio
+        Usuario itemGroup = new Usuario();
+        itemGroup.setNome("Novo grupo");
+        itemGroup.setEmail("");
+        listaContatos.add(itemGroup);
         return view;
     }
 

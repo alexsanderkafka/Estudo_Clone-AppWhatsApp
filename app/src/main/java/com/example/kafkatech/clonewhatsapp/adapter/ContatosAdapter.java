@@ -38,12 +38,18 @@ public class ContatosAdapter extends RecyclerView.Adapter<ContatosAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Usuario user = contatos.get(position);
+        boolean cabecalho = user.getEmail().isEmpty();
+
         holder.nome.setText(user.getNome());
         holder.email.setText(user.getEmail());
         Log.i("info", "Contatos photo --> " + user.getEmail());
         if(user.getFoto() != null){
             Uri uri = Uri.parse(user.getFoto());
             Glide.with(context).load(uri).into(holder.foto);
+        }
+        else if(cabecalho){
+            holder.foto.setImageResource(R.drawable.icone_grupo);
+            holder.email.setVisibility(View.GONE);
         }
         else{
             holder.foto.setImageResource(R.drawable.padrao);
