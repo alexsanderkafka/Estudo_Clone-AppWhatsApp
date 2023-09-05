@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -149,6 +150,25 @@ public class ConversasFragment extends Fragment {
         conversasRef.removeEventListener(childEventListenerConversas);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void pesquisarConversas(String texto){
+        //Log.d("pesquisa", texto);
+
+        List<Conversa> listaConversasBusca = new ArrayList<>();
+        for(Conversa conversa : listConversas){
+            //Pesquisa pelo msg e nome de exibicao
+            String nome = conversa.getUserExibicao().getNome().toLowerCase();
+            String ultimaMsg = conversa.getUltimaMensagem().toLowerCase();
+            if(nome.contains(texto) || ultimaMsg.contains(texto)){
+                listaConversasBusca.add(conversa);
+            }
+        }
+
+        adapter = new ConversasAdapter(listaConversasBusca, getActivity());
+        recyclerViewConversas.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
     public void recuperarConversas(){
 
         childEventListenerConversas = conversasRef.addChildEventListener(new ChildEventListener() {
@@ -180,5 +200,12 @@ public class ConversasFragment extends Fragment {
 
             }
         });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void recarregaConversas(){
+        adapter = new ConversasAdapter(listConversas, getActivity());
+        recyclerViewConversas.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }

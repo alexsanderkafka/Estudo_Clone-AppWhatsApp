@@ -70,4 +70,7 @@ dependencies {
 
     // FirebaseUI Storage only
     implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
+
+    //library for search
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
 }
