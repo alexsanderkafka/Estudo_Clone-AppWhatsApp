@@ -60,4 +60,7 @@
     </string>
     <string name="nome_da_pessoa">Nome da Pessoa</string>
     <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_activity_com_action_button">ComActionButton</string>
+    <string name="title_activity_cadastro_grupo">CadastroGrupoActivity</string>
+    <string name="todo">TODO</string>
 </resources>
