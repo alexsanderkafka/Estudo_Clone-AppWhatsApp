@@ -59,7 +59,7 @@ public class GrupoActivity extends AppCompatActivity {
         //Configurações iniciais
         recyclerMembrosSelecionados = findViewById(R.id.recyclerMembrosSelecionados);
         recyclerMembros = findViewById(R.id.recyclerMembros);
-        fabAvancarCadastro = findViewById(R.id.fabAvancarCadastro);
+        fabAvancarCadastro = findViewById(R.id.fabSalvarCadastroGrupo);
 
         usuariosRef = ConfiguraFirebase.getFirebaseDataBase().child("usuarios");
         usuarioAtual = UsuarioFirebase.getUsuarioAtual();

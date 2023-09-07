@@ -1,6 +1,7 @@
 package com.example.kafkatech.clonewhatsapp.model;
 
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
+import com.example.kafkatech.clonewhatsapp.helper.CodeBase64;
 import com.google.firebase.database.DatabaseReference;
 
 import java.io.Serializable;
@@ -50,5 +51,27 @@ public class Grupo implements Serializable {
 
     public void setMembros(List<Usuario> membros) {
         this.membros = membros;
+    }
+
+    public void salvar() {
+        DatabaseReference databaseReference = ConfiguraFirebase.getFirebaseDataBase();
+        DatabaseReference grupoRef = databaseReference.child("grupos");
+        grupoRef.child(getId())
+                .setValue(this);
+
+        //Salvar conversa para membros do grupo
+        for(Usuario membro : getMembros()){
+            String idRemetente = CodeBase64.codeBase64(membro.getEmail());
+            String idDestinatario = getId();
+
+            Conversa conversa = new Conversa();
+            conversa.setIdRemetente(idRemetente);
+            conversa.setIdDestinatario(idDestinatario);
+            conversa.setUltimaMensagem("");
+            conversa.setIsGrupo("true");
+            conversa.setGrupo(this);
+
+            conversa.salvar();
+        }
     }
 }

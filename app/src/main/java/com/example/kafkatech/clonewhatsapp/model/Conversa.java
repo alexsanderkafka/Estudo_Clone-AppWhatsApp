@@ -9,8 +9,11 @@ public class Conversa {
     private String idDestinatario;
     private String ultimaMensagem;
     private Usuario userExibicao;
+    private String isGrupo;
+    private Grupo grupo;
 
     public Conversa() {
+        this.setIsGrupo("false");
     }
 
     public String getIdRemetente() {
@@ -43,6 +46,22 @@ public class Conversa {
 
     public void setUserExibicao(Usuario userExibicao) {
         this.userExibicao = userExibicao;
+    }
+
+    public String getIsGrupo() {
+        return isGrupo;
+    }
+
+    public void setIsGrupo(String isGrupo) {
+        this.isGrupo = isGrupo;
+    }
+
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
     }
 
     public void salvar(){
