@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.kafkatech.clonewhatsapp.R;
 import com.example.kafkatech.clonewhatsapp.helper.UsuarioFirebase;
 import com.example.kafkatech.clonewhatsapp.model.Conversa;
+import com.example.kafkatech.clonewhatsapp.model.Grupo;
 import com.example.kafkatech.clonewhatsapp.model.Usuario;
 
 import java.util.List;
@@ -41,15 +42,29 @@ public class ConversasAdapter extends RecyclerView.Adapter<ConversasAdapter.MyVi
         Conversa conversa = conversas.get(position);
         holder.ultimaMensagem.setText(conversa.getUltimaMensagem());
 
-        Usuario user = conversa.getUserExibicao();
-        holder.nome.setText(user.getNome());
+        if(conversa.getIsGrupo().equals("true")){
+            Grupo grupo = conversa.getGrupo();
+            holder.nome.setText(grupo.getNome());
 
-        if(user.getFoto() != null){
-            Uri uri = Uri.parse(user.getFoto());
-            Glide.with(context).load(uri).into(holder.foto);
+            if(grupo.getFoto() != null){
+                Uri uri = Uri.parse(grupo.getFoto());
+                Glide.with(context).load(uri).into(holder.foto);
+            }
+            else{
+                holder.foto.setImageResource(R.drawable.padrao);
+            }
         }
         else{
-            holder.foto.setImageResource(R.drawable.padrao);
+            Usuario user = conversa.getUserExibicao();
+            holder.nome.setText(user.getNome());
+
+            if(user.getFoto() != null){
+                Uri uri = Uri.parse(user.getFoto());
+                Glide.with(context).load(uri).into(holder.foto);
+            }
+            else{
+                holder.foto.setImageResource(R.drawable.padrao);
+            }
         }
     }
 
