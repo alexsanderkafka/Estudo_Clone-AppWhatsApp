@@ -67,6 +67,7 @@ public class ChatActivity extends AppCompatActivity {
     private ImageView imageCamera;
     private StorageReference storageReference;
     private Grupo grupo;
+    private Usuario usuarioRemetente;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,6 +129,7 @@ public class ChatActivity extends AppCompatActivity {
 
         //Recupera os dados do usuario remente e destinatário
         idUserRemetente = UsuarioFirebase.getidUsuario();
+        usuarioRemetente = UsuarioFirebase.getDadosUsuarioLogado();
 
         //Configurção adapter
         adapter = new MensagensAdapter(mensagemList, getApplicationContext());
@@ -235,7 +237,11 @@ public class ChatActivity extends AppCompatActivity {
                 salvarMensagem(idUserDestinatario, idUserRemetente, mensagem);
 
                 //Salva uma conversa em um novo nó no firebase
-                salvarConversa(mensagem, false);
+                salvarConversa(idUserRemetente, idUserDestinatario, userDestinatario, mensagem, false);
+
+                //Salvar conversa destinatatio
+                salvarConversa(idUserDestinatario, idUserRemetente, usuarioRemetente, mensagem, false);
+
             }
             else{
                 for(Usuario membro : grupo.getMembros()){
@@ -245,12 +251,13 @@ public class ChatActivity extends AppCompatActivity {
                     Mensagem mensagem = new Mensagem();
                     mensagem.setIdUser(idUsuerLogadoGrupo);
                     mensagem.setMensagem(textMsg);
+                    mensagem.setNome(usuarioRemetente.getNome());
 
                     //Salva mensagem para o membro
                     salvarMensagem(idRemetenteGrupo, idUserDestinatario, mensagem);
 
                     //Salva conversa
-                    salvarConversa(mensagem, true);
+                    salvarConversa(idRemetenteGrupo, idUserDestinatario, userDestinatario, mensagem, true);
                 }
             }
         }
@@ -259,10 +266,10 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private void salvarConversa(Mensagem mensagem, boolean isGroup) {
+    private void salvarConversa(String idRementente, String idDestinatarioMensagem, Usuario usuarioExibicao, Mensagem mensagem, boolean isGroup) {
         Conversa conversaRemetente = new Conversa();
-        conversaRemetente.setIdRemetente(idUserRemetente);
-        conversaRemetente.setIdDestinatario(idUserDestinatario);
+        conversaRemetente.setIdRemetente(idRementente);
+        conversaRemetente.setIdDestinatario(idDestinatarioMensagem);
         conversaRemetente.setUltimaMensagem(mensagem.getMensagem());
 
         if(isGroup){
@@ -270,7 +277,7 @@ public class ChatActivity extends AppCompatActivity {
             conversaRemetente.setGrupo(grupo);
         }
         else{
-            conversaRemetente.setUserExibicao(userDestinatario);
+            conversaRemetente.setUserExibicao(usuarioExibicao);
             conversaRemetente.setIsGrupo("false");
         }
         conversaRemetente.salvar();
