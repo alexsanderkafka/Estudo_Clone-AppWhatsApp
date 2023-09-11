@@ -90,7 +90,6 @@ public class ChatActivity extends AppCompatActivity {
         //Recupera dados do usuário destinatario
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-
             if(bundle.containsKey("chatGrupo")){
                 grupo = (Grupo) bundle.getSerializable("chatGrupo");
                 idUserDestinatario = grupo.getId();
@@ -196,17 +195,37 @@ public class ChatActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Uri> task) {
                                     String url = task.getResult().toString();
-                                    Mensagem mensagem = new Mensagem();
-                                    mensagem.setIdUser(idUserRemetente);
-                                    mensagem.setMensagem("imagem.jpg");
-                                    mensagem.setFoto(url);
 
-                                    //Salva a mensagem remetente
-                                    salvarMensagem(idUserRemetente, idUserDestinatario, mensagem);
+                                    if(userDestinatario != null) {
+                                        Mensagem mensagem = new Mensagem();
+                                        mensagem.setIdUser(idUserRemetente);
+                                        mensagem.setMensagem("imagem.jpg");
+                                        mensagem.setFoto(url);
 
-                                    //Salva a mensagem destinatario
-                                    salvarMensagem(idUserDestinatario, idUserRemetente, mensagem);
+                                        //Salva a mensagem remetente
+                                        salvarMensagem(idUserRemetente, idUserDestinatario, mensagem);
 
+                                        //Salva a mensagem destinatario
+                                        salvarMensagem(idUserDestinatario, idUserRemetente, mensagem);
+                                    }
+                                    else{
+                                        for(Usuario membro : grupo.getMembros()){
+                                            String idRemetenteGrupo = CodeBase64.codeBase64(membro.getEmail());
+                                            String idUsuerLogadoGrupo = UsuarioFirebase.getidUsuario();
+
+                                            Mensagem mensagem = new Mensagem();
+                                            mensagem.setIdUser(idUsuerLogadoGrupo);
+                                            mensagem.setMensagem("imagem.jpg");
+                                            mensagem.setNome(usuarioRemetente.getNome());
+                                            mensagem.setFoto(url);
+
+                                            //Salva mensagem para o membro
+                                            salvarMensagem(idRemetenteGrupo, idUserDestinatario, mensagem);
+
+                                            //Salva conversa
+                                            salvarConversa(idRemetenteGrupo, idUserDestinatario, userDestinatario, mensagem, true);
+                                        }
+                                    }
                                     Toast.makeText(ChatActivity.this, "Sucesso ao enviar imagem", Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -224,7 +243,6 @@ public class ChatActivity extends AppCompatActivity {
     public void enviar(View view){
         String textMsg = editMensagem.getText().toString();
         if(!textMsg.isEmpty()){
-
             if(userDestinatario != null){
                 Mensagem mensagem = new Mensagem();
                 mensagem.setIdUser(idUserRemetente);
@@ -309,6 +327,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void recuperarMensagens(){
+        mensagemList.clear();
         childEventListenerMensagens = msgRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {

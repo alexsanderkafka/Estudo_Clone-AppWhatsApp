@@ -140,11 +140,7 @@ public class ContatosFragment extends Fragment {
                 )
         );
 
-        //Define usuário com e-mail vazio
-        Usuario itemGroup = new Usuario();
-        itemGroup.setNome("Novo grupo");
-        itemGroup.setEmail("");
-        listaContatos.add(itemGroup);
+        adicionarMenuNovoGrupo();
         return view;
     }
 
@@ -165,6 +161,7 @@ public class ContatosFragment extends Fragment {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                limparListaContatos();
                 for(DataSnapshot dados : snapshot.getChildren()){
                     Usuario user = dados.getValue(Usuario.class);
                     String emailUsuarioAtual = user.getEmail();
@@ -180,6 +177,19 @@ public class ContatosFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+    }
+
+    public void adicionarMenuNovoGrupo(){
+        //Define usuário com e-mail vazio
+        Usuario itemGroup = new Usuario();
+        itemGroup.setNome("Novo grupo");
+        itemGroup.setEmail("");
+        listaContatos.add(itemGroup);
+    }
+
+    public void limparListaContatos(){
+        listaContatos.clear();
+        adicionarMenuNovoGrupo();
     }
 
     @SuppressLint("NotifyDataSetChanged")

@@ -190,6 +190,7 @@ public class ConversasFragment extends Fragment {
     }
 
     public void recuperarConversas(){
+        listConversas.clear();
 
         childEventListenerConversas = conversasRef.addChildEventListener(new ChildEventListener() {
             @SuppressLint("NotifyDataSetChanged")
