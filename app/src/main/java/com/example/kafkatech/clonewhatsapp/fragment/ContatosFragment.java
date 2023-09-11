@@ -18,6 +18,7 @@ import com.example.kafkatech.clonewhatsapp.R;
 import com.example.kafkatech.clonewhatsapp.activity.ChatActivity;
 import com.example.kafkatech.clonewhatsapp.activity.GrupoActivity;
 import com.example.kafkatech.clonewhatsapp.adapter.ContatosAdapter;
+import com.example.kafkatech.clonewhatsapp.adapter.ConversasAdapter;
 import com.example.kafkatech.clonewhatsapp.config.ConfiguraFirebase;
 import com.example.kafkatech.clonewhatsapp.helper.RecyclerItemClickListener;
 import com.example.kafkatech.clonewhatsapp.helper.UsuarioFirebase;
@@ -29,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -42,11 +44,12 @@ public class ContatosFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private ContatosAdapter contatosAdapter;
+    private ContatosAdapter adapter;
     private ArrayList<Usuario> listaContatos = new ArrayList<>();
     private DatabaseReference usuariosRef;
     private ValueEventListener valueEventListenerContatos;
     private FirebaseUser usuarioAtual;
+    private RecyclerView recyclerViewListaContatos;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -90,15 +93,15 @@ public class ContatosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_contatos, container, false);
 
         //Configurações iniciais
-        RecyclerView recyclerViewListaContatos = view.findViewById(R.id.recyclerViewListaContatos);
+        recyclerViewListaContatos = view.findViewById(R.id.recyclerViewListaContatos);
         usuariosRef = ConfiguraFirebase.getFirebaseDataBase().child("usuarios");
         usuarioAtual = UsuarioFirebase.getUsuarioAtual();
-        contatosAdapter = new ContatosAdapter(listaContatos, getActivity());
+        adapter = new ContatosAdapter(listaContatos, getActivity());
 
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
         recyclerViewListaContatos.setLayoutManager(manager);
         recyclerViewListaContatos.setHasFixedSize(true);
-        recyclerViewListaContatos.setAdapter(contatosAdapter);
+        recyclerViewListaContatos.setAdapter(adapter);
 
         //Configura evento de clique no recyclerview
         recyclerViewListaContatos.addOnItemTouchListener(
@@ -108,7 +111,10 @@ public class ContatosFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Usuario userSelect = listaContatos.get(position);
+
+                                List<Usuario> listaUserAtualizada = adapter.getContatos();
+
+                                Usuario userSelect = listaUserAtualizada.get(position);
                                 boolean cabecalho = userSelect.getEmail().isEmpty();
                                 Intent i;
                                 if(cabecalho){
@@ -167,7 +173,7 @@ public class ContatosFragment extends Fragment {
                         listaContatos.add(user);
                     }
                 }
-                contatosAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -175,4 +181,30 @@ public class ContatosFragment extends Fragment {
             }
         });
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void pesquisarContatos(String texto){
+        //Log.d("pesquisa", texto);
+
+        List<Usuario> listaContatosBusca = new ArrayList<>();
+        for(Usuario usuario : listaContatos){
+            String nome = usuario.getNome().toLowerCase();
+            if(nome.contains(texto)){
+                listaContatosBusca.add(usuario);
+            }
+
+        }
+
+        adapter = new ContatosAdapter(listaContatosBusca, getActivity());
+        recyclerViewListaContatos.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void recarregaContatos(){
+        adapter = new ContatosAdapter(listaContatos, getActivity());
+        recyclerViewListaContatos.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
 }

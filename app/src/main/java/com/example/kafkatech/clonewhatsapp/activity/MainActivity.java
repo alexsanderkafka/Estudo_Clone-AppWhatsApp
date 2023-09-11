@@ -81,11 +81,31 @@ public class MainActivity extends AppCompatActivity {
                 //Log.d("evento", "onQueryTextChange");
 
                 //Recuperando a lista de conversas do fragment conversas
-                ConversasFragment fragment = (ConversasFragment) adapter.getPage(0);
+                //Verifica se esta pesquisando Conversas ou Contatos
+                //a partir da tab que esta ativa
+                switch (viewPager.getCurrentItem()){
+                    case 0:
+                        ConversasFragment conversasFragment = (ConversasFragment) adapter.getPage(0);
 
-                if(newText != null && !newText.isEmpty()){
-                    fragment.pesquisarConversas(newText.toLowerCase());
+                        if(newText != null && !newText.isEmpty()){
+                            conversasFragment.pesquisarConversas(newText.toLowerCase());
+                        }
+                        else{
+                            conversasFragment.recarregaConversas();
+                        }
+                        break;
+                    case 1:
+                        ContatosFragment contatosFragment = (ContatosFragment) adapter.getPage(1);
+                        if(newText != null && !newText.isEmpty()){
+                            contatosFragment.pesquisarContatos(newText.toLowerCase());
+                        }
+                        else{
+                            contatosFragment.recarregaContatos();
+                        }
+                        break;
                 }
+
+
                 return true;
             }
         });
